@@ -551,9 +551,12 @@ export default function Aaushade() {
   }, [processScanImage]);
 
   useEffect(() => {
-    if (tab==="scan"&&scanMode==="camera") startCamera();
-    return () => videoRef.current?.srcObject?.getTracks().forEach(t=>t.stop());
-  }, [tab, scanMode, startCamera]);
+      if (tab === "scan" && scanMode === "camera") startCamera();
+      return () => {
+        const video = videoRef.current;
+        video?.srcObject?.getTracks().forEach((t) => t.stop());
+      };
+   }, [tab, scanMode, startCamera]);
 
   const getName = p => p[`name_${lang}`] || p.name_en || "";
   const getDesc = p => { try { const d=typeof p.description==="string"?JSON.parse(p.description):p.description; return d?.[lang]||d?.en||""; } catch { return ""; } };
